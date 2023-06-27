@@ -1,0 +1,76 @@
+---------------------------------------------------------------------------------------------------------------------------------
+pgm1.sh
+---------------------------------------------------------------------------------------------------------------------------------
+for filename in $1/*
+do
+	echo $filename | grep -q " "
+	if [[ $? -eq 0 ]]
+	then
+		newname=$(echo $filename | sed -e "s/ /_/g")
+		echo $newname
+		mv "$filename" "$newname"
+	fi
+done
+
+---------------------------------------------------------------------------------------------------------------------------------
+pgm2.sh
+---------------------------------------------------------------------------------------------------------------------------------
+file1="/var/log/syslog"
+file2="/var/log/kern.log"
+file3="/var/file"
+mydate="^Jun 27"
+
+for file in $file{1,2,3}
+do
+        if [[ -f $file ]]
+        then
+                echo "=========From file $file========"
+                egrep "$mydate" /var/log/syslog | head
+        else
+                echo "==========File $file NOT found======"
+        fi
+done
+
+---------------------------------------------------------------------------------------------------------------------------------
+pgm3.sh
+---------------------------------------------------------------------------------------------------------------------------------
+
+pattern=$1
+IFS=":"
+while read account password uid gid name directory shell
+do
+    if [[ $(echo $name | grep -i -c "$pattern") -gt 0 ]]
+    then
+        echo "$account:$password:$uid:$gid:$name:$directory:$shell"
+    fi
+done < /etc/passwd
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+pgm4.sh
+---------------------------------------------------------------------------------------------------------------------------------
+
+echo "Enter File/Directory"
+read FILE
+
+if [ -e "$FILE" ]; then
+	if [ -f "$FILE" ]; then
+		echo "$FILE is a regular file."
+	fi
+	if [ -d "$FILE" ]; then
+		echo "$FILE is a directory."
+	fi
+	if [ -r "$FILE" ]; then
+		echo "$FILE is readable."
+	fi
+	if [ -w "$FILE" ]; then
+		echo "$FILE is writable."
+	fi
+	if [ -x "$FILE" ]; then
+		echo "$FILE is executable/searchable."
+	fi
+else
+	echo "$FILE does not exist"
+	exit 1
+fi
+exit
