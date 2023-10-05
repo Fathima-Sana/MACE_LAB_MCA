@@ -1,0 +1,1 @@
+This program is to create an XML page with userid and password to login.If the login credentials are equal, then toast as'Login successfull'.
